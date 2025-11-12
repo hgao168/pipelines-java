@@ -1,0 +1,16 @@
+{
+  "name": "hello-world-k8s",
+  "version": "1.0.0",
+  "description": "A simple Hello World web application for Kubernetes",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "build": "docker build -t hello-world-k8s .",
+    "deploy": "kubectl apply -f k8s/"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
