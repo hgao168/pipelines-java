@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Docker image
+        run: docker build -t hello-world-k8s:latest .
+
+      - name: Run container and test
+        run: |
+          docker run --rm -d -p 8080:8080 --name hello-world hello-world-k8s:latest
+          sleep 2
+          curl -f http://localhost:8080 || exit 1
+          docker stop hello-world
